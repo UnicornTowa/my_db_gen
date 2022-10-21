@@ -13,7 +13,6 @@
 #include <vector>
 #include <stdexcept>
 #include <array>
-#include <string>
 #include <random>
 #include <unordered_map>
 #include <unordered_set>
@@ -23,7 +22,6 @@ using namespace std;
 wstring get_full_male_name();
 wstring get_full_female_name();
 wstring get_male_name();
-wstring get_phone_number(int megafon, int beeline, int mts, int tele2);
 wstring get_phone_number();
 wstring get_addr();
 void prepare_addresses();
