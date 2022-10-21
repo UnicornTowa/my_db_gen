@@ -2592,3 +2592,4 @@ wstring get_full_male_name(){
 wstring get_male_name() {
     return male_names[rand() % 733];
 }
+
