@@ -4,7 +4,23 @@
 
 #include "header.h"
 
-const vector<wstring> addresses[79] = {{L"пр-кт Владимирский", L"1/47 стр А", L"1/47 стр Б", L"10 стр А", L"10 стр В", L"12 стр А", L"14 стр А", L"16 стр А", L"20 стр А", L"20 стр Б", L"20 стр В", L"20 стр Д", L"20 стр Е", L"20 стр З", L"20 стр Р", L"20 стр С", L"3 стр А", L"5 стр А", L"7 стр А", L"7 стр Б", L"8 стр А", L"8 стр Б", L"9 стр А", L"9а стр А"},
+int dir_probability, manager_probability, secretary_probability, account_probability, service_probability, main_prof_probability;
+
+void set_job_probabitily(int _dir_probability, int _manager_probability, int _secretary_probability,
+                         int _account_probability, int _service_probability, int _main_prof_probability){
+    if (_dir_probability + _manager_probability + _secretary_probability + _account_probability +
+        _service_probability + _main_prof_probability != 100)
+        throw invalid_argument("Wrong job probability");
+    dir_probability = _dir_probability;
+    manager_probability = _manager_probability;
+    secretary_probability = _secretary_probability;
+    account_probability = _account_probability;
+    service_probability = _service_probability;
+    main_prof_probability = _main_prof_probability;
+}
+
+const vector<wstring> addresses[79] = // 2263
+                                 {{L"пр-кт Владимирский", L"1/47 стр А", L"1/47 стр Б", L"10 стр А", L"10 стр В", L"12 стр А", L"14 стр А", L"16 стр А", L"20 стр А", L"20 стр Б", L"20 стр В", L"20 стр Д", L"20 стр Е", L"20 стр З", L"20 стр Р", L"20 стр С", L"3 стр А", L"5 стр А", L"7 стр А", L"7 стр Б", L"8 стр А", L"8 стр Б", L"9 стр А", L"9а стр А"},
                                   {L"ул. Стремянная", L"1/6 стр А", L"10 стр А", L"11 стр А", L"12 стр А", L"12 стр Б", L"13 стр А", L"14 стр А", L"15/1 стр А", L"16 стр А", L"18 стр А", L"19 стр А", L"19а стр А", L"2/4 стр А", L"20 стр А", L"21/5 стр А", L"22/3 стр А", L"22/3 стр Б", L"2а стр А", L"3 стр А", L"3 стр Б", L"4 стр А", L"5 стр А", L"5 стр Б"},
                                   {L"ул. Восстания", L"2/116", L"2/116 стр А", L"4 стр А", L"6 стр А", L"6а стр А", L"8 стр А", L"8 стр Б", L"8 стр Г", L"8 стр Д", L"8 стр Е", L"8 стр Ж", L"8 стр К", L"8 стр М", L"8а стр А"},
                                   {L"Реки Фонтанки наб.,	38 стр А", L"38 стр Б", L"38 стр Д", L"40/68 стр А", L"40/68 стр Б", L"40/68 стр Т", L"44 стр А", L"46 стр Б", L"46 стр В", L"46 стр З", L"46 стр М", L"46а стр М"},
@@ -132,7 +148,9 @@ wstring get_addr(){
     return addresses[n][0] + L" " + addresses[n][1 + rand() % (quantity[n] - 1)];
 }
 
-pair<wstring, int> Company::get_employee() const { pair<wstring, int> res;
+pair<wstring, int> Company::get_employee(int _dir_probability, int _manager_probability, int _secretary_probability,
+                                         int _account_probability, int _service_probability, int _main_prof_probability)
+                                         const { pair<wstring, int> res;
     if (gen_dir_q == 0){
         gen_dir_q ++;
         return {L"Генеральный директор", salary(L"Генеральный директор", false)};
@@ -140,22 +158,26 @@ pair<wstring, int> Company::get_employee() const { pair<wstring, int> res;
     else{
         int index;
         auto rng = rand() % 100;
-        if (rng < 10){
+        if (rng < dir_probability){
             index = rand () % 3;
             return {dir[index], salary(dir[index], false)};
         }
-        else if (rng < 35)
+        else if (rng < manager_probability)
             return {L"Менеджер", salary(L"Менеджер", true)};
-        else if (rng < 40)
+        else if (rng < secretary_probability)
             return {L"Секретарь", salary(L"Секретарь", true)};
-        else if (rng < 45)
+        else if (rng < account_probability)
             return {L"Бухгалтер", salary(L"Бухгалтер", true)};
-        else if (rng < 65){
+        else if (rng < service_probability){
             index = rand() % 4;
             return {service[index], salary(service[index], false)};
         }
         else return {main_prof[spec], salary(main_prof[spec], true)};
     }
+}
+
+pair<wstring, int> Company::get_employee() const {
+    return Company::get_employee(dir_probability, manager_probability, secretary_probability, account_probability, service_probability, main_prof_probability);
 }
 
 //dir           10%

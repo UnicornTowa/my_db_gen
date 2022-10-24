@@ -11,6 +11,8 @@ unordered_set<Company, Company_hash> companies_set;
 
 int main() {
     setlocale(LC_ALL, "Russian");
+    set_operators_probability(40, 20, 30, 10);
+    set_job_probabitily(10, 25, 5, 5, 20, 35);
     prepare_addresses();
     companies_set.rehash(200000);
 
@@ -24,7 +26,7 @@ int main() {
             sheet->writeStr(1, 3, L"Должность");
             sheet->writeStr(1, 4, L"Заработная плата");
             cout << "Start generating" << endl;
-            for (int i = 2; i < 200002; i++) {
+            for (int i = 2; i < 500002; i++) {
                 auto addr = get_addr();
                 if (!companies_set.contains(Company(addr))) {
                     companies_set.insert(Company(addr));
@@ -41,7 +43,7 @@ int main() {
         sheet->setCol(0, 3, 32);
         sheet->setCol(1, 1, 15);
         sheet->setCol(4, 4, 15);
-        book->save(L"dataset_new.xlsx");
+        book->save(L"dataset_new_new.xlsx");
         book->release();
         cout << "Done.. exiting" << endl;
     }

@@ -3,7 +3,12 @@
 std::random_device rd;
 std::mt19937 gen(rd());
 std::uniform_int_distribution<> dist(0, 10000000 - 1);
-
+int megafon, beeline, mts, tele2; // 40 20 30 10
+void set_operators_probability(int _megafon, int _beeline, int _mts, int _tele2){
+    if (_megafon + _beeline + _mts + _tele2 != 100)
+        throw invalid_argument("Wrong operators probability");
+    megafon = _megafon; beeline = _beeline; mts = _mts; tele2 = _tele2;
+}
 static array<int,3> Megafon = {929, 921, 931};
 
 static array<int, 5> Tele2 = {901, 952, 904, 950, 951};
@@ -92,8 +97,6 @@ wstring return_wstring_num_of_operator(array<int, N> arr){
 }
 
 wstring generate_phone_number(int megafon, int beeline, int mts, int tele2){
-    if (megafon + beeline + mts + tele2 != 100)
-        throw invalid_argument("Wrong probabilities, sum != 100");
     int choose = rand() % 100;
 //    num = wstring(7 - num.length(), '0') + num;
     if (choose < megafon){
@@ -133,8 +136,8 @@ wstring generate_phone_number(int megafon, int beeline, int mts, int tele2){
 wstring get_phone_number(){
     wstring num;
     do
-        num = generate_phone_number(40, 20, 30, 10);
+        num = generate_phone_number(megafon, beeline, mts, tele2);
     while (phones.contains(num));
     phones.insert(num);
     return num;
-}
+}   //// НАСТРОЙКА ОПЕРАТОРОВ
