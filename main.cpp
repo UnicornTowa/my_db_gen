@@ -11,10 +11,10 @@ unordered_set<Company, Company_hash> companies_set;
 
 int main() {
     setlocale(LC_ALL, "Russian");
-    set_operators_probability(40, 20, 30, 10);
-    set_job_probabitily(10, 25, 5, 5, 20, 35);
-    prepare_addresses();
-    companies_set.rehash(200000);
+    set_operators_probability(40, 20, 30, 10); //// <- вероятности выдачи номера различных операторов, %
+    set_job_probability(10, 25, 5, 5, 20, 35); //// <- вероятности присвоение профессии из каждой категории, %
+    int num_of_lines = 500000;                 //// <- количество строк для генерации
+    companies_set.rehash(num_of_lines);
 
     auto* book = xlCreateXMLBookW();
     if (book) {
@@ -26,7 +26,7 @@ int main() {
             sheet->writeStr(1, 3, L"Должность");
             sheet->writeStr(1, 4, L"Заработная плата");
             cout << "Start generating" << endl;
-            for (int i = 2; i < 500002; i++) {
+            for (int i = 2; i < 2 + num_of_lines; i++) {
                 auto addr = get_addr();
                 if (!companies_set.contains(Company(addr))) {
                     companies_set.insert(Company(addr));

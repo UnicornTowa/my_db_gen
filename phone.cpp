@@ -3,19 +3,20 @@
 std::random_device rd;
 std::mt19937 gen(rd());
 std::uniform_int_distribution<> dist(0, 10000000 - 1);
+
 int megafon, beeline, mts, tele2; // 40 20 30 10
 void set_operators_probability(int _megafon, int _beeline, int _mts, int _tele2){
     if (_megafon + _beeline + _mts + _tele2 != 100)
         throw invalid_argument("Wrong operators probability");
     megafon = _megafon; beeline = _beeline; mts = _mts; tele2 = _tele2;
 }
-static array<int,3> Megafon = {929, 921, 931};
+const array<int,3> Megafon = {929, 921, 931};
 
-static array<int, 5> Tele2 = {901, 952, 904, 950, 951};
+const array<int, 5> Tele2 = {901, 952, 904, 950, 951};
 
-static array<int, 2> Mts = {911, 981};
+const array<int, 2> Mts = {911, 981};
 
-static array<int, 9> Beeline = {961, 962, 963, 964, 903, 905, 906, 909, 960};
+const array<int, 9> Beeline = {961, 962, 963, 964, 903, 905, 906, 909, 960};
 
 const unordered_map<int, vector<std::uniform_int_distribution<>>> bounds = {
         {929,{
@@ -96,7 +97,7 @@ wstring return_wstring_num_of_operator(array<int, N> arr){
     return s + to_wstring(code) + num_to_wstring(num);
 }
 
-wstring generate_phone_number(int megafon, int beeline, int mts, int tele2){
+wstring generate_phone_number(){
     int choose = rand() % 100;
 //    num = wstring(7 - num.length(), '0') + num;
     if (choose < megafon){
@@ -136,8 +137,8 @@ wstring generate_phone_number(int megafon, int beeline, int mts, int tele2){
 wstring get_phone_number(){
     wstring num;
     do
-        num = generate_phone_number(megafon, beeline, mts, tele2);
+        num = generate_phone_number();
     while (phones.contains(num));
     phones.insert(num);
     return num;
-}   //// НАСТРОЙКА ОПЕРАТОРОВ
+}

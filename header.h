@@ -24,14 +24,13 @@ wstring get_full_female_name();
 wstring get_male_name();
 wstring get_phone_number();
 wstring get_addr();
-void prepare_addresses();
 void set_operators_probability(int _megafon, int _beeline, int _mts, int _tele2);
-void set_job_probabitily(int _dir_probability, int _manager_probability, int _secretary_probability,
+void set_job_probability(int _dir_probability, int _manager_probability, int _secretary_probability,
                          int _account_probability, int _service_probability, int _main_prof_probability);
 
 struct Company {
     wstring addr;
-    mutable int gen_dir_q = 0;
+    mutable bool gen_dir_generated = false;
     int spec;
     explicit Company(wstring addr) : addr(std::move(addr)) {
         spec = rand() % 7;
