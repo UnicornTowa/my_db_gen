@@ -3,9 +3,9 @@ project(db_gen)
 
 set(CMAKE_CXX_STANDARD 20)
 
-link_directories(C:/Users/tosha/CLionProjects/lib/libxl-4.0.4.0/lib)
+link_directories(C:/Users/tosha/CLionProjects/lib/libxl-4.0.4.0/lib) # path to libxl library
 
-add_library(libxl C:/Users/tosha/CLionProjects/lib/libxl-4.0.4.0/lib/libxl.lib)
+add_library(libxl C:/Users/tosha/CLionProjects/lib/libxl-4.0.4.0/lib/libxl.lib) # path to libxl.lib
 
 set_target_properties(libxl PROPERTIES LINKER_LANGUAGE CXX)
 
@@ -13,4 +13,4 @@ add_executable(db_gen main.cpp header.h male_name_gen.cpp female_name_gen.cpp ph
 
 target_link_libraries(db_gen LINK_PUBLIC libxl)
 
-include_directories(C:/Users/tosha/CLionProjects/lib/libxl-4.0.4.0/include_cpp)
+include_directories(C:/Users/tosha/CLionProjects/lib/libxl-4.0.4.0/include_cpp) # path to libxl include directory
