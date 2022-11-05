@@ -1,15 +1,20 @@
 #include "header.h"
 
+/// Готовимся генерировать случайные числа, всеми любимая rand() к сожалению не делает числа больше 2^15
 std::random_device rd;
 std::mt19937 gen(rd());
-std::uniform_int_distribution<> dist(0, 10000000 - 1);
 
+/// Числа характеризующие вероятности выдачи номера конкретного оператора
 int megafon, beeline, mts, tele2; // 40 20 30 10
+
+/// Функция устанавливающая значения параметрам выше, с проверкой на корректность данных
 void set_operators_probability(int _megafon, int _beeline, int _mts, int _tele2){
     if (_megafon + _beeline + _mts + _tele2 != 100)
         throw invalid_argument("Wrong operators probability");
     megafon = _megafon; beeline = _beeline; mts = _mts; tele2 = _tele2;
 }
+
+/// Массивы с кодами операторов
 const array<int,3> Megafon = {929, 921, 931};
 
 const array<int, 5> Tele2 = {901, 952, 904, 950, 951};
@@ -18,6 +23,7 @@ const array<int, 2> Mts = {911, 981};
 
 const array<int, 9> Beeline = {961, 962, 963, 964, 903, 905, 906, 909, 960};
 
+/// unordered_map отображающий код оператора в вектор из генераторов чисел принадлежащих ему диапазонов
 const unordered_map<int, vector<std::uniform_int_distribution<>>> bounds = {
         {929,{
             std::uniform_int_distribution<>(1000000, 1999999)
@@ -81,13 +87,16 @@ const unordered_map<int, vector<std::uniform_int_distribution<>>> bounds = {
         {981, {std::uniform_int_distribution<>(7000000, 7499999)}}
 };
 
+/// Для проверки уникальности номера телефона
 std::unordered_set<wstring> phones;
 
+/// Переводит число в строку + дополняет нулями до нужной длины, если требуется
 wstring num_to_wstring(int num){
     wstring res = to_wstring(num);
     return wstring(7 - res.length(), '0') + res;
 }
 
+/// Массив (с кодами операторов) на входе и корректный номер на выходе
 template<size_t N>
 wstring return_wstring_num_of_operator(array<int, N> arr){
     auto code = arr[rand() % N];
@@ -97,6 +106,7 @@ wstring return_wstring_num_of_operator(array<int, N> arr){
     return s + to_wstring(code) + num_to_wstring(num);
 }
 
+/// Получаем номер согласно установленным ранее вероятностям
 wstring generate_phone_number(){
     int choose = rand() % 100;
 //    num = wstring(7 - num.length(), '0') + num;
@@ -114,26 +124,7 @@ wstring generate_phone_number(){
     }
 }
 
-//wstring generate_phone_number(int megafon, int beeline, int mts, int tele2){
-//    if (megafon + beeline + mts + tele2 != 100)
-//        throw invalid_argument("Wrong probabilities, sum != 100");
-//    int choose = rand() % 100;
-//    wstring s = L"+7";
-//    wstring num = to_wstring(dist(gen));
-//    num = wstring(7 - num.length(), '0') + num;
-//    if (choose < megafon){
-//        return s + to_wstring(Megafon[rand() % 3]) + num;
-//    }
-//    else if (choose < megafon + beeline){
-//        return s + to_wstring(Beeline[rand() % 9]) + num;
-//    }
-//    else if (choose < megafon + beeline + mts){
-//        return s + to_wstring(Mts[rand() % 2]) + num;
-//    }
-//    else {
-//        return s + to_wstring(Tele2[rand() % 5]) + num;
-//    }
-//}
+/// Генерируем уникальный номер
 wstring get_phone_number(){
     wstring num;
     do

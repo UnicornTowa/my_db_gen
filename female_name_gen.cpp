@@ -2,8 +2,9 @@
 // Created by tosha on 17/10/2022.
 //
 #include "header.h"
-
-wstring female_names[938] = {L"Августа",
+/// Комментарии в файле male_name_gen, тут всё абсолютно аналогично
+// 938
+vector<wstring> female_names = {L"Августа",
                             L"Августина",
                             L"Авдотья",
                             L"Аврелия",
@@ -941,8 +942,8 @@ wstring female_names[938] = {L"Августа",
                             L"Янка",
                             L"Янсылу",
                             L"Ярослава"};
-
-wstring female_surnames[1833] = {L"Абабкова",
+//1833
+vector<wstring> female_surnames = {L"Абабкова",
                                  L"Абакшина",
                                  L"Абашеева",
                                  L"Аббакумова",

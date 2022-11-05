@@ -3,8 +3,9 @@
 //
 
 #include "header.h"
-
-wstring male_names[733] = {L"Аарон",
+/// Мужские имена (неопрятно зато быстро работает, да их можно было бы сделать естественнее)
+// 733
+vector<wstring> male_names = {L"Аарон",
                            L"Аба",
                            L"Аббас",
                            L"Абдуллах",
@@ -737,7 +738,9 @@ wstring male_names[733] = {L"Аарон",
                            L"Яромир",
                            L"Ярополк",
                            L"Ярослав"};
-wstring male_surnames[1833] = {L"Абабков",
+/// Аналогично - фамилии
+//1833
+vector<wstring> male_surnames = {L"Абабков",
                               L"Абакшин",
                               L"Абашеев",
                               L"Аббакумов",
@@ -2570,6 +2573,8 @@ wstring male_surnames[1833] = {L"Абабков",
                               L"Яшенькин",
                               L"Яшников",
                               L"Ящишин"};
+/// Делаем мужское отчество из мужского имени (окончание отчества зависит от последней буквы)
+/// <br>wstring(s, 0, s.length - 1) - возвращает строку s без последней буквы
 wstring get_male_patronymic(){
     auto s = male_names[rand() % 733];
     auto last_literal = s[s.length() - 1];
@@ -2585,10 +2590,11 @@ wstring get_male_patronymic(){
     }
     else return s + L"ович";
 }
-
+/// Возвращает ФИО
 wstring get_full_male_name(){
     return male_surnames[rand() % 1833] + L" " + male_names[rand() % 733] + L" " + get_male_patronymic();
 }
+/// Функция выдающая случайное мужское имя, видна глобально чтобы можно было сделать женское отчество из другого файла
 wstring get_male_name() {
     return male_names[rand() % 733];
 }

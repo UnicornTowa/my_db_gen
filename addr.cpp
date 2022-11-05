@@ -4,8 +4,10 @@
 
 #include "header.h"
 
+/// Вероятности появления всех категорий профессий
 int dir_probability, manager_probability, secretary_probability, account_probability, service_probability, main_prof_probability;
 
+/// Устанавливаем значения параметров выше, с проверкой на корректность данных
 void set_job_probability(int _dir_probability, int _manager_probability, int _secretary_probability,
                          int _account_probability, int _service_probability, int _main_prof_probability){
     if (_dir_probability + _manager_probability + _secretary_probability + _account_probability +
@@ -19,6 +21,7 @@ void set_job_probability(int _dir_probability, int _manager_probability, int _se
     main_prof_probability = _main_prof_probability;
 }
 
+/// Хранение адресов, каждая строка содержит название улицы в 0 элементе и номера домов в остальных
 const vector<wstring> addresses[79] = {     // 2263
                                    {L"пр-кт Владимирский", L"1/47 стр А", L"1/47 стр Б", L"10 стр А", L"10 стр В", L"12 стр А", L"14 стр А", L"16 стр А", L"20 стр А", L"20 стр Б", L"20 стр В", L"20 стр Д", L"20 стр Е", L"20 стр З", L"20 стр Р", L"20 стр С", L"3 стр А", L"5 стр А", L"7 стр А", L"7 стр Б", L"8 стр А", L"8 стр Б", L"9 стр А", L"9а стр А"},
                                    {L"ул. Стремянная", L"1/6 стр А", L"10 стр А", L"11 стр А", L"12 стр А", L"12 стр Б", L"13 стр А", L"14 стр А", L"15/1 стр А", L"16 стр А", L"18 стр А", L"19 стр А", L"19а стр А", L"2/4 стр А", L"20 стр А", L"21/5 стр А", L"22/3 стр А", L"22/3 стр Б", L"2а стр А", L"3 стр А", L"3 стр Б", L"4 стр А", L"5 стр А", L"5 стр Б"},
@@ -100,6 +103,8 @@ const vector<wstring> addresses[79] = {     // 2263
                                    {L"6-я В.О. линия", L"53 стр А", L"55 стр А", L"59/1 стр Б", L"59/2 стр В"},
                                    {L"пр-кт Малый В.О.", L"15 стр А", L"15 стр Б", L"15 стр В", L"19 стр А", L"21 стр А", L"27 стр А", L"27 стр Т", L"27-29", L"27-29 стр Е", L"27/2 стр А", L"29 стр Б", L"29 стр В", L"29 стр Г", L"3/60 стр А", L"30-32 стр А", L"30-32 стр Б", L"30-32 стр В", L"30-32 стр Г", L"33 стр А", L"33 стр Б", L"33 стр В", L"34 стр А", L"35 стр А", L"35 стр Б", L"37 стр А", L"37 стр Б", L"37/49", L"37/49 стр Б", L"38-40/73 стр А", L"38-40/73 стр Ж", L"41 стр А", L"41 стр Б", L"41 стр В", L"41 стр Г1", L"41 стр Г2", L"43/2 стр В", L"43/75 стр А", L"44 стр А", L"44 стр Б", L"46 стр А", L"47 стр Т", L"48 стр А", L"48/2 стр А", L"5 стр А", L"51/50 стр А", L"51/50 стр Б", L"52 стр 1", L"52 стр Б", L"53 стр А", L"54 стр А", L"54/2 стр А1", L"54/3 стр Ж", L"54/4 стр В", L"54/5 стр Е", L"54/5 стр П", L"54/6 стр Т", L"54/7 стр Ф", L"54/8 стр Ш", L"55/1 стр А", L"55/2 стр А", L"57/1 стр Д", L"57/2 стр Б", L"57/3 стр А", L"57/4 стр Ж", L"57/6 стр М", L"57/7 стр А", L"58 стр А", L"58 стр Б", L"58 стр Е", L"58 стр И", L"60 стр А", L"62/1 стр А", L"62/2 стр А", L"64", L"64 стр Р", L"64 стр Х", L"66 стр А", L"7 стр А", L"83 стр Б", L"83 стр В"}};
 
+/// map переводящий должность в среднюю з/п, если честно можно было бы заморочиться с числовыми кодами
+/// <br><br> Да, у генерального директора почему-то такая низкая зарплата, но мы люди подневольные, что в статистике так и делаем
 const unordered_map<wstring, int> job_to_salary = {
         {L"Генеральный директор", 50000},
         {L"Административный директор", 60000},
@@ -121,11 +126,15 @@ const unordered_map<wstring, int> job_to_salary = {
         {L"Строитель", 60000}, //  18
 };
 
-const wstring dir[3] = {L"Административный директор", L"Финансовый директор",L"Директор по маркетингу"};
-const wstring main_prof[7] = {L"Автослесарь", L"Продавец", L"Программист", L"Инженер",
+/// Массивы хранящие профессии одной категории (если категория состоит больше чем из одной профессии)
+const vector<wstring> dir = {L"Административный директор", L"Финансовый директор",L"Директор по маркетингу"};
+const vector<wstring> service = {L"Уборщик", L"Охранник", L"Водитель", L"Комендант"};
+/// Индекс в main_prof является кодом основной профессии
+const vector<wstring> main_prof = {L"Автослесарь", L"Продавец", L"Программист", L"Инженер",
                               L"Врач", L"Повар", L"Строитель"};
-const wstring service[4] = {L"Уборщик", L"Охранник", L"Водитель", L"Комендант"};
 
+/// Генерация з/п по должности <br>
+/// Флажок divide говорит можно ли делить з/п
 int salary(const wstring& job, bool divide){
     int base_salary = job_to_salary.at(job);
     int div = 1;
@@ -135,21 +144,25 @@ int salary(const wstring& job, bool divide){
     return job_to_salary.at(job) * (80 + rand() % 41) / 100 / div;
 }
 
+/// Получаем случайный адрес
 wstring get_addr(){
     int n = rand() % 79;
     return addresses[n][0] + L" д. " + addresses[n][1 + rand() % (addresses[n].size() - 1)];
 }
-
+/// Реализация метода класса описанного в header.h
 pair<wstring, int> Company::get_employee(int _dir_probability, int _manager_probability, int _secretary_probability,
                                          int _account_probability, int _service_probability, int _main_prof_probability)
                                          const { pair<wstring, int> res;
+    /// Если нет ген директора - делаем и меняем флажок, именно для этого там mutable
     if (!gen_dir_generated){
         gen_dir_generated = true;
         return {L"Генеральный директор", salary(L"Генеральный директор", false)};
     }
     else{
+        /// Индекс в массивах в случае выбора профессии из категории не из одного элемента
         int index;
         auto rng = rand() % 100;
+        /// Далее в зависимость от rng возвращаем должность и з/п к ней из нужной категории
         if (rng < dir_probability){
             index = rand () % 3;
             return {dir[index], salary(dir[index], false)};
@@ -159,7 +172,7 @@ pair<wstring, int> Company::get_employee(int _dir_probability, int _manager_prob
         else if (rng < secretary_probability + manager_probability + dir_probability)
             return {L"Секретарь", salary(L"Секретарь", true)};
         else if (rng < account_probability + secretary_probability + manager_probability + dir_probability)
-            return {L"Бухгалтер", salary(L"Бухгалтер", true)};
+            return {L"Бухгалтер", salary(L"Бухгалтер", false)};
         else if (rng < service_probability + account_probability + secretary_probability + manager_probability + dir_probability){
             index = rand() % 4;
             return {service[index], salary(service[index], false)};
@@ -167,7 +180,7 @@ pair<wstring, int> Company::get_employee(int _dir_probability, int _manager_prob
         else return {main_prof[spec], salary(main_prof[spec], true)};
     }
 }
-
+/// Тот же метод но без аргументов
 pair<wstring, int> Company::get_employee() const {
     return Company::get_employee(dir_probability, manager_probability, secretary_probability, account_probability, service_probability, main_prof_probability);
 }
