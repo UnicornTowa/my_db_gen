@@ -39,12 +39,12 @@ struct Company {
         spec = rand() % 7;
     }
     /// Методы ниже константные чтобы их можно было вызвать у объекта внутри контейнера
-    /// <br> Метод выдающий работника по вероятностям заданным единожды в начале программы
-    pair<wstring, int> get_employee() const;
-    /// Метод дающий работника по вероятностям (его на самом деле вызывает метод без аргументов)
+    /// <br> Метод дающий работника по вероятностям (его на самом деле вызывает метод без аргументов)
     pair<wstring, int> get_employee(int _dir_probability, int _manager_probability,
                                     int _secretary_probability, int _account_probability,
                                     int _service_probability, int _main_prof_probability) const;
+    /// Метод выдающий работника по вероятностям заданным единожды в начале программы
+    pair<wstring, int> get_employee() const;
     /// Перегрузка оператора равенства
     bool operator== (const Company& A) const{
         return this->addr == A.addr;
@@ -57,6 +57,6 @@ struct Company_hash {
     }
 };
 
-
+unordered_set<Company, Company_hash> companies_set;
 
 #endif //DB_GEN_HEADER_H

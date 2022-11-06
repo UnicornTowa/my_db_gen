@@ -5,7 +5,7 @@ std::random_device rd;
 std::mt19937 gen(rd());
 
 /// Числа характеризующие вероятности выдачи номера конкретного оператора
-int megafon, beeline, mts, tele2; // 40 20 30 10
+int megafon, mts, beeline, tele2; // 40 20 30 10
 
 /// Функция устанавливающая значения параметрам выше, с проверкой на корректность данных
 void set_operators_probability(int _megafon, int _beeline, int _mts, int _tele2){
@@ -17,11 +17,12 @@ void set_operators_probability(int _megafon, int _beeline, int _mts, int _tele2)
 /// Массивы с кодами операторов
 const array<int,3> Megafon = {929, 921, 931};
 
-const array<int, 5> Tele2 = {901, 952, 904, 950, 951};
-
 const array<int, 2> Mts = {911, 981};
 
 const array<int, 9> Beeline = {961, 962, 963, 964, 903, 905, 906, 909, 960};
+
+const array<int, 5> Tele2 = {901, 952, 904, 950, 951};
+
 
 /// unordered_map отображающий код оператора в вектор из генераторов чисел принадлежащих ему диапазонов
 const unordered_map<int, vector<std::uniform_int_distribution<>>> bounds = {
@@ -98,7 +99,7 @@ wstring num_to_wstring(int num){
 
 /// Массив (с кодами операторов) на входе и корректный номер на выходе
 template<size_t N>
-wstring return_wstring_num_of_operator(array<int, N> arr){
+wstring generate_number_of_operator(array<int, N> arr){
     auto code = arr[rand() % N];
     wstring s = L"+7";
     const vector<uniform_int_distribution<>>& bounds_for_code = bounds.at(code);
@@ -111,16 +112,16 @@ wstring generate_phone_number(){
     int choose = rand() % 100;
 //    num = wstring(7 - num.length(), '0') + num;
     if (choose < megafon){
-        return return_wstring_num_of_operator(Megafon);
+        return generate_number_of_operator(Megafon);
     }
     else if (choose < megafon + beeline){
-        return return_wstring_num_of_operator(Beeline);
+        return generate_number_of_operator(Beeline);
     }
     else if (choose < megafon + beeline + mts){
-        return return_wstring_num_of_operator(Mts);
+        return generate_number_of_operator(Mts);
     }
     else {
-        return return_wstring_num_of_operator(Tele2);
+        return generate_number_of_operator(Tele2);
     }
 }
 

@@ -8,7 +8,6 @@ wstring get_name(){
 
 using namespace libxl;
 
-unordered_set<Company, Company_hash> companies_set;
 
 int main() {
     setlocale(LC_ALL, "Russian"); /// Локаль для корректного отображения wstring
@@ -52,7 +51,7 @@ int main() {
         sheet->setCol(1, 1, 15);
         sheet->setCol(4, 4, 15);
 
-        book->save(L"dataset_test6.xlsx");
+        book->save(L"dataset.xlsx");
         book->release();
 
         cout << "Done.. exiting" << endl;
