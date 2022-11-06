@@ -7,7 +7,7 @@ wstring get_name(){
 }
 
 using namespace libxl;
-
+unordered_set<Company, Company_hash> companies_set;
 
 int main() {
     setlocale(LC_ALL, "Russian"); /// Локаль для корректного отображения wstring

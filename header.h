@@ -57,6 +57,6 @@ struct Company_hash {
     }
 };
 
-unordered_set<Company, Company_hash> companies_set;
+
 
 #endif //DB_GEN_HEADER_H
